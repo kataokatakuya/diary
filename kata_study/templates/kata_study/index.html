@@ -1,10 +1,33 @@
+{% load static %}
 <!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
     <title>カタカタ学習</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'kata_study/css/style.css' %}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 </head>
 <body>
-    aaa
+    <img src="{% static 'kata_study/macbook.webp' %}" class="image-vw">
+    <div class="header">
+        <div class="site_title">
+            カタカタ学習
+        </div>
+        <div class="menu">
+            <nav class="navbar navbar-expand navbar-light bg-light">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">ホーム</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Python</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">日記</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,25 @@
+.header {
+    position: absolute;
+    background: #222;
+    right: 0;
+    left: 0;
+    z-index: 1999;
+    width: auto;
+    margin: auto;
+}
+
+.site_title {
+    display: inline-block;
+    color: white;
+    margin-left:2em;
+    margin-top: 1em;
+}
+.menu {
+    display: inline-block;
+    float:right;
+}
+
+.image-vw {
+    width : 100vw ;
+    height: 50vw;
+  }
