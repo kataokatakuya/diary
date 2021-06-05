@@ -1,121 +1,91 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}カタカタ学習:トップページ{% endblock %}
+
 {% load static %}
-<!doctype html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <title>カタカタ学習:トップページ}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'kata_study/css/style.css' %}" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'kata_study/js/report.js' %}"></script>
-</head>
-<body style="background-color:#eef2f8">
-    <div class="image">
-        <img src="{% static 'kata_study/way.webp' %}" class="top_image_vw">
-        <div class="top_catch_copy">
-            <div class="top_catch_copy_frame">
-                <img src="{% static 'kata_study/senri.jpg' %}" class="catch_copy_img">
+{% block image %}
+<img src="{% static 'kata_study/way.webp' %}" class="top_image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="top_catch_copy">
+    <div class="top_catch_copy_frame">
+        <img src="{% static 'kata_study/senri.jpg' %}" class="catch_copy_img">
+    </div>
+    <div class="catch_copy_text">
+        毎日の小さな積み重ねを続けてゆけば、自身を大きく変革させ、大きな壁でも乗り越えられる。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="introduction_body">
+    <div class="introduction_headline">
+        当サイトについて
+    </div>
+    <div class="introduction_part">
+        <div class="purpose_creation">
+            当サイトは、<br>
+            <div class="purpose_creation_part">
+                <li>学習記録を自身の備忘録として残すこと</li>
+                <li>自身の学習状況を振り返ること</li>
             </div>
-            <div class="catch_copy_text">
-                毎日の小さな積み重ねを続けてゆけば、自身を大きく変革させ、大きな壁でも乗り越えられる。
+            を目的としています。<br><br>
+        </div>
+        <div class="creation_opportunity">
+            当サイトを作成したきっかけは、以下の2つです。<br>
+            <div class="creation_opportunity_part">
+                <ol>
+                    <li>現職の会社にて 私の後輩社員がE資格取得などの勉強に励んでいるため、そのサポートとなるように 私の学習記録を残せていければと思ったため。</li><br>
+                    <li>私も含めて学習に励む後輩が、計画を立てて学習をし、日々の振り返りを行い、目標を持ちながら日々の学習に励めればと思ったため。</li>
+                </ol>
             </div>
         </div>
     </div>
-    <header class="site_header">
-        <div class="site_title">
-            <a class="site_title_link" href="{% url 'index' %}">カタカタ学習</a>
+    <div class="introduction_headline">
+        自己紹介
+    </div>
+    <div class="introduction_part">
+        <div class="greeting">
+            はじめまして。片岡といいます。
         </div>
-        <div class="menu">
-            <nav class="navbar navbar-expand navbar-light bg-light">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">機械学習</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">記録</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">投稿</a>
-                    </li>
-                    <li class="nav-item">
-                        <!-- <a class="nav-link" href="/admin/logout?next=/report/">ログアウト</a> -->
-                    </li>
-                </ul>
-            </nav>
+        <div class="engineer_introduction_part">
+            <div class="introduction_part_item">
+                【エンジニアになってから】
+            </div>
+            <div class="contents">
+                2018年からシステムエンジニアとなり、
+                ソフトウェアの開発、試験を主に日々業務を行ってます。<br><br>
+    
+                前職は建築施工管理をやっておりまして、
+                もともとはITエンジニアに必要な知識が全くありませんでしたが、
+                ここ3年間で日々の業務と学習をする中で 自身の能力を養ってきました。<br><br>
+    
+                使えるようになったプログラミング言語としては、
+                <strong>Java</strong>, <strong>JavaScript</strong>, 
+                <strong>Ruby</strong>, <strong>Python</strong>, 
+                <strong>VB</strong>等となります。<br><br>
+    
+                資格としては、
+                <strong>E資格</strong>や<strong>基本情報技術者</strong>、
+                <strong>JSTQB</strong>を取得しました。<br><br>
+            </div>
         </div>
-    </header>
-    <div class="content">
-        <div class="content_card">
-            <div class="introduction_body">
-                <div class="introduction_headline">
-                    当サイトについて
-                </div>
-                <div class="introduction_part">
-                    <div class="purpose_creation">
-                        当サイトは、<br>
-                        <div class="purpose_creation_part">
-                            <li>学習記録を自身の備忘録として残すこと</li>
-                            <li>自身の学習状況を振り返ること</li>
-                        </div>
-                        を目的としています。<br><br>
-                    </div>
-                    <div class="creation_opportunity">
-                        当サイトを作成したきっかけは、以下の2つです。<br>
-                        <div class="creation_opportunity_part">
-                            <ol>
-                                <li>現職の会社にて 私の後輩社員がE資格取得などの勉強に励んでいるため、そのサポートとなるように 私の学習記録を残せていければと思ったため。</li><br>
-                                <li>私も含めて学習に励む後輩が、計画を立てて学習をし、日々の振り返りを行い、目標を持ちながら日々の学習に励めればと思ったため。</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="introduction_headline">
-                    自己紹介
-                </div>
-                <div class="introduction_part">
-                    <div class="greeting">
-                        はじめまして。片岡といいます。
-                    </div>
-                    <div class="engineer_introduction_part">
-                        <div class="introduction_part_item">
-                            【エンジニアになってから】
-                        </div>
-                        <div class="contents">
-                            2018年からシステムエンジニアとなり、
-                            ソフトウェアの開発、試験を主に日々業務を行ってます。<br><br>
-                
-                            前職は建築施工管理をやっておりまして、
-                            もともとはITエンジニアに必要な知識が全くありませんでしたが、
-                            ここ3年間で日々の業務と学習をする中で 自身の能力を養ってきました。<br><br>
-                
-                            使えるようになったプログラミング言語としては、
-                            <strong>Java</strong>, <strong>JavaScript</strong>, 
-                            <strong>Ruby</strong>, <strong>Python</strong>, 
-                            <strong>VB</strong>等となります。<br><br>
-                
-                            資格としては、
-                            <strong>E資格</strong>や<strong>基本情報技術者</strong>、
-                            <strong>JSTQB</strong>を取得しました。<br><br>
-                        </div>
-                    </div>
-                    <div class="hobby_introduction_part">
-                        <div class="introduction_part_item">
-                            【趣味】
-                        </div>
-                        <div class="contents">
-                            趣味は、楽器演奏と料理、ゲームになります。<br><br>
-                            楽器はヴァイオリンをやっており、アマチュアオーケストラに所属してます。<br><br>
-                            コロナが流行してきてからは、
-                            オーケストラは休止状態になってしまっていますが、
-                            コロナ前は パートリーダーという役職を持って、
-                            楽しく楽器をオーケストラで弾いてました。<br><br>
-                            コロナが流行してからは、
-                            休日は家で過ごすことが多くなり、料理やゲームをして、おうち時間を楽しんでます。
-                        </div>
-                    </div>
-                </div>
+        <div class="hobby_introduction_part">
+            <div class="introduction_part_item">
+                【趣味】
+            </div>
+            <div class="contents">
+                趣味は、楽器演奏と料理、ゲームになります。<br><br>
+                楽器はヴァイオリンをやっており、アマチュアオーケストラに所属してます。<br><br>
+                コロナが流行してきてからは、
+                オーケストラは休止状態になってしまっていますが、
+                コロナ前は パートリーダーという役職を持って、
+                楽しく楽器をオーケストラで弾いてました。<br><br>
+                コロナが流行してからは、
+                休日は家で過ごすことが多くなり、料理やゲームをして、おうち時間を楽しんでます。
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
