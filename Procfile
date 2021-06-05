@@ -1,1 +1,1 @@
-web: gunicorn kata_study.wsgi --log-file -
+web: gunicorn diary.wsgi --log-file -
