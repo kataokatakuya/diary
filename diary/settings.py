@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^#4+9i-ir8$2r_ng^@8k6*flq%i4sy!&rsh_2b5ancu=s$=nqx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['django-kata-study.herokuapp.com', '.localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
