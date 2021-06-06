@@ -1,0 +1,40 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}カタカタ学習:日々の記録{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/write.webp' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        PDCA
+    </div>
+    <div class="catch_copy_text">
+        PDCAサイクルを回す中で、
+        自身の目標設定と振り返りを行います。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="post_title">
+    PDCA
+</div>
+<div class="form_body">
+    <form action="{% url 'edit' record.id %}" method="post">
+        {% csrf_token %}
+        {{ plan_form.as_p }}<br>
+        {{ do_form.as_p }}<br>
+        {{ check_form.as_p }}<br>
+        {{ action_form.as_p }}
+        <div class="button_area">
+            <button class="btn btn-primary" type="submit">
+                更新
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

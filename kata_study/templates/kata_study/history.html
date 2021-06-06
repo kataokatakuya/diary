@@ -25,7 +25,7 @@
         <div class="history_table_title">日々の記録</div>
         <table class="history_table">
         {% for history in histories %}
-            <tr class="history_link" data-href="{% url 'index' %}">
+            <tr class="history_link" data-href="{% url 'record' history.id %}">
                 <td>
                     {{history.plan_date |date:"Y年n月d日"}} 計画
                 </td>

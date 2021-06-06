@@ -1,0 +1,109 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}カタカタ学習:{{record.plan_date}} 計画記録{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/diary.webp' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        日々の振り返り
+    </div>
+    <div class="catch_copy_text">
+        日々の記録をつけることで自身の振り返りを行います。
+        現在の課題を自身で明確化し、その課題達成のために努力をしていくことで 
+        自身の力を拓いていきます。
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="record_content_card">
+    <div class="note_box">
+        <div class="note_date">
+            {{record.plan_date |date:"Y年n月d日"}} 計画記録
+        </div>
+        <div class="note_content_box">
+            <div class="note_content">
+                <div class="note_content_item">
+                    PLAN
+                </div>
+                <div class="note_posted_date">
+                    計画日：{{record.plan_date |date:"Y年n月d日"}}
+                </div>
+                <div class="note_content_text">
+                    {{record.plan_text}}
+                </div>
+                <br>
+            </div>
+            <div class="note_content">
+                <div class="note_content_item">
+                    DO
+                </div> 
+                <div class="note_posted_date">
+                    実行期間：
+                    {% if record.do_start %}
+                        {{record.do_start |date:"Y年n月d日"}} ~ 
+                    {% endif %}
+                    {% if record.do_end %}
+                        {{record.do_end |date:"Y年n月d日"}}
+                    {% endif %}
+                </div>
+                <div class="note_content_text">
+                    {% if record.do_text %}
+                        {{record.do_text}}
+                    {% endif %}
+                </div>
+                <br>
+            </div>
+            <div class="note_content">
+                <div class="note_content_item">
+                    CHECK
+                </div> 
+                <div class="note_posted_date">
+                    評価実施日：
+                    {% if record.check_date %}
+                        {{record.check_date |date:"Y年n月d日"}}
+                    {% endif %}
+                </div>
+                <div class="note_content_text">
+                    {% if record.check_text %}
+                        {{record.check_text}}
+                    {% endif %}
+                </div>  
+                <br>   
+            </div>
+            <div class="note_content">
+                <div class="note_content_item">
+                    Action
+                </div> 
+                <div class="note_posted_date">
+                    改善開始日：
+                    {% if record.action_date %}
+                        {{record.action_date |date:"Y年n月d日"}}
+                    {% endif %}
+                </div>
+                <div class="note_content_text">
+                    {% if record.action_text %}
+                        {{record.action_text}}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="button_group_box">
+    <div class="button_group">
+        <form action="{% url 'edit' record.id %}" class="note_edit_form">
+            <button class="btn btn-primary">編集する</button>
+        </form>
+        <form action="{% url 'delete' record.id %}">
+            <button class="btn btn-primary">削除する</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
