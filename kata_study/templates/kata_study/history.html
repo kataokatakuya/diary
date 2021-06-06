@@ -1,0 +1,93 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}カタカタ学習:日々の記録{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/diary.webp' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        日々の振り返り
+    </div>
+    <div class="catch_copy_text">
+        日々の記録をつけることで自身の振り返りを行います。
+        現在の課題を自身で明確化し、その課題達成のために努力をしていくことで 
+        自身の力を拓いていきます。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="history_body">
+        <div class="history_table_title">日々の記録</div>
+        <table class="history_table">
+        {% for history in histories %}
+            <tr class="history_link" data-href="{% url 'index' %}">
+                <td>
+                    {{history.plan_date |date:"Y年n月d日"}} 計画
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block paginator %}
+    <ul class="pagination justify-content-center">
+        {% if histories.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'history' %}">
+                &laquo; first
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url 'history' %}/{{histories.previous_page_number}}">
+                &laquo; prev
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">
+                &laquo; first
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">
+                &laquo; prev
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link">
+                {{histories.number}}/{{histories.paginator.num_pages}}
+            </a>
+        </li>
+        {% if histories.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'history' %}/{{histories.next_page_number }}">
+                next &raquo;
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url 'history' %}/{{histories.paginator.num_pages}}">
+                last &raquo;
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">
+                next &raquo;
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">
+                last &raquo;
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock %}
