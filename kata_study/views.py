@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from .models import Record, Topic
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     return render(request, 'kata_study/index.html')
 
-
+@login_required(login_url='/admin/login/')
 def history(request, num=1):
     data = Record.objects.filter(owner=request.user)
     page = Paginator(data, 3)
