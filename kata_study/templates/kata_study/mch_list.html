@@ -1,0 +1,93 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}カタカタ学習:機械学習{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/artificial_intelligence.jpeg' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        機械学習
+    </div>
+    <div class="catch_copy_text">
+        機械学習は、人間や動物が経験を通して自然に学習することをコンピューターにさせようとするデータ解析テクニックのことをいいます。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="topic_body">
+    {% for topic in topics %}
+    <article class="topic_item">
+        <a href="{% url topic.url %}" class="topic_item_link">
+            <img src="{% static topic.image %}" class="topic_image">
+            <div class="topic_item_title">
+                {{ topic.title }}
+            </div>
+            <div class="topic_item_text">
+                {{ topic.text }}
+            </div> 
+        </a>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block paginator %}
+    <ul class="pagination justify-content-center">
+        {% if topics.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'mch' %}">
+                &laquo; first
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url 'mch' %}/{{topics.previous_page_number}}">
+                &laquo; prev
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">
+                &laquo; first
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">
+                &laquo; prev
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link">
+                {{topics.number}}/{{topics.paginator.num_pages}}
+            </a>
+        </li>
+        {% if topics.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'mch' %}/{{topics.next_page_number }}">
+                next &raquo;
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url 'mch' %}/{{topics.paginator.num_pages}}">
+                last &raquo;
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">
+                next &raquo;
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">
+                last &raquo;
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock %}
