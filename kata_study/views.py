@@ -13,6 +13,48 @@ import datetime
 def index(request):
     return render(request, 'kata_study/index.html')
 
+
+@login_required(login_url='/admin/login/')
+def plan_post(request):
+    if(request.method == 'GET'):
+        params = {
+            'plan_form': PlanForm(),
+        }
+        return render(request, 'kata_study/plan_post.html', params)
+    elif(request.method == 'POST'):
+        owner = request.user
+        plan_text = request.POST['plan']
+        plan_date = request.POST['plan_date']
+        record = Record(owner=owner, plan_text=plan_text, plan_date=plan_date)
+        record.save()
+        last_data = Record.objects.order_by('id').reverse().first()
+        params = {
+            'record': last_data,
+            'do_form': DoForm(),
+        }
+        if 'done' in request.POST:
+            return render(request, 'kata_study/record.html', params)
+        elif 'next' in request.POST:
+            return render(request, 'kata_study/do_post.html', params)
+
+
+
+@login_required(login_url='/admin/login/')
+def do_post(request, num):
+    if(request.method == 'POST'):
+        data = Record.objects.filter(id=num).first()
+        data.do_start = makedate(request.POST['do_start'])
+        data.do_end = makedate(request.POST['do_end'])
+        data.do_text = request.POST['do']
+        data.save()
+        params = {
+            'do_form': PlanForm(),
+            'record': data,
+        }
+        return render(request, 'kata_study/record.html', params)
+
+
+
 @login_required(login_url='/admin/login/')
 def history(request, num=1):
     data = Record.objects.filter(owner=request.user)
