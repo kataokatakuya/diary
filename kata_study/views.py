@@ -8,6 +8,10 @@ from .forms import ActionForm
 from .models import Record, Topic
 from django.contrib.auth.decorators import login_required
 import datetime
+import numpy as np
+import pandas as pd  # データの加工用のパッケージ
+from sklearn import linear_model  # 線形回帰を行うためのモジュール
+from sklearn import datasets  # サンプルデータセットをインポートするためのモジュール
 
 
 def index(request):
@@ -185,11 +189,41 @@ def multi_reg(request):
         'result_title': '',
         'flg': flg
     }
-    # if (request.method == 'POST'):
-    #     model_data = multi_learn()
-    #     params['coefficients'] = model_data['coefficients'].to_html()
-    #     params['intercept'] = model_data['intercept']
-    #     params['score'] = model_data['score']
-    #     params['result_title'] = "【実行結果】"
-    #     params['flg'] = "Y"
+    if (request.method == 'POST'):
+        model_data = multi_learn()
+        params['coefficients'] = model_data['coefficients'].to_html()
+        params['intercept'] = model_data['intercept']
+        params['score'] = model_data['score']
+        params['result_title'] = "【実行結果】"
+        params['flg'] = "Y"
     return render(request, 'kata_study/multi_reg.html', params)
+
+
+def multi_learn():
+    # ボストンデータの読込
+    boston = datasets.load_boston()
+    # ボストンデータを表形式に変換
+    dat = pd.DataFrame(data=boston.data, columns=boston.feature_names)
+    # ターゲット(住宅価格)を表に追加
+    dat["MEDV_PRICE"] = boston.target
+    
+    # 説明変数の設定(表形式に変換したdatからPRICEデータの1列を削除)
+    X = dat.drop("MEDV_PRICE", axis=1)
+    # 目的変数の設定
+    y = dat["MEDV_PRICE"]
+
+    # 線形回帰モデルのインスタンスを作成
+    lr = linear_model.LinearRegression()
+
+    # 回帰の実行
+    lr.fit(X, y)
+
+    model_data = {
+        'coefficients': '',
+        'intercept':'',
+        'score': '',
+    }
+    model_data['coefficients'] = pd.DataFrame({"Name": X.columns,"Coefficients": lr.coef_}).sort_values(by='Coefficients')
+    model_data['intercept'] = '切片： ' + str(lr.intercept_)
+    model_data['score'] = '決定係数： ' + str(lr.score(X, y))
+    return model_data
