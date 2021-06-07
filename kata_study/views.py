@@ -192,4 +192,4 @@ def multi_reg(request):
     #     params['score'] = model_data['score']
     #     params['result_title'] = "【実行結果】"
     #     params['flg'] = "Y"
-    return render(request, 'report/multi_reg.html', params)
+    return render(request, 'kata_study/multi_reg.html', params)
