@@ -1,0 +1,81 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}単回帰を使ってグラフをプロット|カタカタ学習{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/house.webp' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        単回帰を使ってグラフをプロット
+    </div>
+    <div class="catch_copy_text">
+        単回帰を用いて目的変数の予測を行います。データとしては、scikit-learnのサンプルデータセットである、
+        「Boston house-prices」を使用します。住居の平均部屋数（RM）を説明変数として住宅価格の中央値（PRICE）を
+        予測したものをグラフにプロットします。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="topic_page">
+    <div class="topic_page_title">
+        単回帰を使って説明変数と目的変数の関係をグラフにプロットしてみた
+    </div>
+    <div class="topic_page_content">
+        <p>
+            <strong>回帰</strong>とは、連続的な数値を予測する手法のことを指す。
+        </p>
+        <div class="term">
+            <div class="cue_item">【重要用語】</div>
+            <div class="term_item">・説明変数</div>
+            <div class="term_text">目的変数を説明する変数のこと。</div><br>
+            <div class="term_item">・目的変数</div>
+            <div class="term_text">予測したい変数のこと。</div><br>
+            <div class="term_item">・単回帰</div>
+            <div class="term_text">説明変数を1つだけ用いて目的変数の予測を行うこと。</div>
+        </div>
+        <div class="example">
+            <div class="cue_item">【回帰の例】</div>
+            住宅価格を、部屋の面積、駅へのアクセスのしやすさ、街の発展具合などの情報から予測することは、回帰分析の1つの例に当てはまる。
+            <br>この場合、予測するために用いた部屋の面積や駅へのアクセスのしやすさ、街の発展具合といったデータのことを<strong>説明変数</strong>といい、予測対象である住宅価格のことを<strong>目的変数</strong>という。
+        </div>
+        <div class="purpose">
+            <div class="cue_item">【回帰の目的】</div>
+            ①数値の予測を行うこと。
+            <br>②回帰分析により、どの説明変数が目的変数に大きな影響を与えているのかを知ること。
+        </div>
+        <div class="implement">
+            <div class="cue_item">【回帰の実装】</div>
+            以下にソースコードを記載。
+            <br>ここでは、単回帰を用いて目的変数の予測を行う。
+            <br>データとしては、scikit-learnのサンプルデータセットである、「Boston house-prices」を用いる。
+            <br>住居の平均部屋数（RM）を説明変数として住宅価格の中央値（PRICE）を予測する。
+        </div>
+        <script src="https://gist.github.com/kataokatakuya/fe5ed8f83d8c913d33a8d9144ec27015.js"></script>
+        <!-- <form action="{% url 'smp_reg' %}" method="post" class="regression_form">
+            {% csrf_token %}
+            <input type="submit" value="単回帰の実行" class="run_btn">
+        </form>
+        <div class="result">
+            <b>{{result_title}}</b>
+        </div>
+        <div class="graph_frame">
+            <img src="{{graph}}" alt="" onerror="this.style.display='none'" class="graph">
+        </div>
+        <div class="score-block">
+            {{ coefficients }}
+            <br>{{ intercept }}
+            <br>{{ score }}
+        </div> -->
+        <div class="reference">
+            <div class="cue_item">【参考にさせていただいたサイト】</div>
+            <a href="https://atarimae.biz/archives/18707">・回帰分析とその主な目的。単回帰分析・重回帰分析・ロジスティック回帰分析の違いについて</a>
+            <br><a href="https://momonoki2017.blogspot.com/2018/01/scikit-learn_28.html">・Scikit-learnで機械学習（回帰分析）</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

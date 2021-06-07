@@ -153,3 +153,23 @@ def mch(request, num=1):
         'topics': page.get_page(num),
     }
     return render(request, 'kata_study/mch_list.html', params)
+
+
+# 単回帰ページの表示
+def smp_reg(request):
+    params = {
+        'graph': '',
+        'coefficients': '',
+        'intercept':'',
+        'score': '',
+        'result_title': ''
+    }
+    # # 単回帰ページにて「単回帰の実行」ボタンを押下時
+    # if (request.method == 'POST'):
+    #     model_data = smp_learn()
+    #     params['graph'] = '/report/smp_reg/smp_plot'
+    #     params['coefficients'] = model_data['coefficients']
+    #     params['intercept'] = model_data['intercept']
+    #     params['score'] = model_data['score']
+    #     params['result_title'] = "【実行結果】"
+    return render(request, 'kata_study/smp_reg.html', params)
