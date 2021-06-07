@@ -1,0 +1,112 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}ロジスティック回帰|カタカタ学習{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/wine.webp' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        ロジスティック回帰を使ってワインの種類を分類する
+    </div>
+    <div class="catch_copy_text">
+        ロジスティック回帰を用いてクラスの分類を行います。
+        アルコール濃度（Alcohol）とリンゴ酸の含量（Malic acid）を特徴量としてワインの種類を分類します。
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="topic_page">
+    <div class="topic_page_title">
+        ロジスティック回帰でクラス分類した結果を図にプロットして、識別境界線を引いてみた
+    </div>
+    <div class="topic_page_content">
+        <div class="term">
+            <div class="cue_item">【重要用語】</div>
+            <div class="term_item">・ロジスティック回帰</div>
+            <div class="term_text">
+                ロジスティック回帰はいくつかある「回帰分析」の一種であり、
+                分類問題を扱うためのアルゴリズムである。<br>
+                ロジスティック回帰が用いられる場面は、目的変数（予測の結果）が2つ、もしくは割合データである場合であり、
+                観測値がどのクラスに属するかという確率の予測を行うものある。
+            </div><br>
+            <div class="term_item">・シグモイド関数</div>
+            <div class="term_text">
+                シグモイド関数は、あらゆる入力値を0.0～1.0の範囲の数値に変換して出力する関数である。
+                <br>
+                <div class="formula_box">
+                    <div class="formula_box_cue">
+                        【公式】
+                    </div>
+                    <img src="{% static 'kata_study/sigmoid.png' %}" class="formula_image">
+                </div>
+                <div class="formula_image_box">
+                    <img src="{% static 'kata_study/sigmoid_graph.svg' %}" class="sigmoid_graph">
+                    <div class="graph_bottom">
+                        図1: シグモイド関数のグラフ
+                    </div>
+                </div>
+            </div><br>
+        </div>
+        <div class="implement">
+            <div class="cue_item">【ロジステック回帰の実装】</div>
+            ここでは、ロジスティック回帰を用いてクラス分類を行う。
+            <br>データとしては、scikit-learnのサンプルデータセットから「ワインのデータセット」を用いる。
+            <br>アルコール濃度（Alcohol）とリンゴ酸の含量（Malic acid）を特徴量としてワインの種類を分類する。
+        </div>
+        <div class="table_title">
+            <p>表1：ワインのデータセットから今回使用する特徴量</p>
+        </div>
+        <table class="wine_table">
+            <tr>
+                <td>alcohol</td>
+                <td>アルコール濃度（%）</td>
+            </tr>
+            <tr>
+                <td>malic_acid</td>
+                <td>リンゴ酸の含量（g/L）</td>
+            </tr>
+        </table>
+        <div class="gist_note">
+            以下にソースコードを記載。
+        </div>
+        <script src="https://gist.github.com/kataokatakuya/85e6828b3c4c942d2c1f51308da1fb22.js"></script>
+        <!-- <form action="{% url 'log_reg' %}" method="post" class="regression_form">
+            {% csrf_token %}
+            <input type="submit" value="ロジスティック回帰の実行" class="run_btn">
+        </form>
+        <div class="result">
+            {{result_title}}
+        </div>
+        <div class="graph_frame">
+            <img src="{{graph}}" alt="" onerror="this.style.display='none'" class="graph">
+        </div>
+        <div class="graph_bottom">
+            {{ graph_name }}
+        </div>
+        <div class="score-block">
+            {{ score }}
+        </div> -->
+        {% if flg %}
+        <div class="commentary">
+            <b>【解説】</b>
+            <br>上図は、ロジスティック回帰で学習したモデルにて、各データを3つのクラスに分類し、クラスの識別境界線を引いたものになります。
+            <br>正解率としては、0.77528・・・となっており、ワインの種類を約78%の精度で予測できていることがわかりました。
+        </div>
+        {% endif %}
+        <div class="reference">
+            <div class="cue_item">【参考にさせていただいたサイト】</div>
+            <a href="https://www.marketing-intelligence.jp/blog/logistic-regression-analysis">
+                ・ロジスティック回帰分析とは？マーケティング担当者が知っておきたい具体例も解説
+            </a><br>
+            <a href="https://ensekitt.hatenablog.com/entry/2018/08/18/200000">
+                ・scikit-learnのdatasetsにはどんなのが入っているのか調べてみた話【Linnerud, Wine編】
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

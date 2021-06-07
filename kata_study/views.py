@@ -293,6 +293,7 @@ def multi_reg(request):
     return render(request, 'kata_study/multi_reg.html', params)
 
 
+# 重回帰の実行
 def multi_learn():
     # ボストンデータの読込
     boston = datasets.load_boston()
@@ -321,3 +322,21 @@ def multi_learn():
     model_data['intercept'] = '切片： ' + str(lr.intercept_)
     model_data['score'] = '決定係数： ' + str(lr.score(X, y))
     return model_data
+
+
+# ロジスティック回帰ページの表示
+def log_reg(request):
+    flg = ""
+    params = {
+        'graph': '',
+        'flg': flg,
+    }
+    # if (request.method == 'POST'):
+    #     # ロジスティック回帰の学習
+    #     score = log_learn()
+    #     params['graph'] = '/kata_study/log_reg/log_plot'
+    #     params['result_title'] = "【実行結果】"
+    #     params['score'] = '正解率： ' + str(score)
+    #     params['graph_name'] = "図2: ロジスティック回帰の識別境界"
+    #     params['flg'] = "Y"
+    return render(request, 'kata_study/log_reg.html', params)
