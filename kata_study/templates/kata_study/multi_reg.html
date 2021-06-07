@@ -1,0 +1,135 @@
+{% extends 'kata_study/layout.html' %}
+
+{% block title %}重回帰分析により、どの説明変数が目的変数により大きな影響を与えているかをみる|カタカタ学習{% endblock %}
+
+{% load static %}
+{% block image %}
+<img src="{% static 'kata_study/houses.jpeg' %}" class="image_vw">
+{% endblock %}
+
+{% block catch %}
+<div class="catch_copy_box">
+    <div class="catch_copy">
+        重回帰分析による目的変数の予測
+    </div>
+    <div class="catch_copy_text">
+        重回帰を用いて目的変数の予測を行います。
+        住宅価格の中央値（PRICE）をNOx濃度や1戸当たりの「平均部屋数」などの
+        複数の説明変数から、どの説明変数が目的変数により大きな影響を与えているかをみていきます。
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="topic_page">
+    <div class="topic_page_title">
+        重回帰分析により、どの説明変数が目的変数により大きな影響を与えているかをみる
+    </div>
+    <div class="topic_page_content">
+        <div class="term">
+            <div class="cue_item">【重要用語】</div>
+            <div class="term_item">・重回帰</div>
+            <div class="term_text">説明変数を複数用いて目的変数の予測を行うこと。</div>
+        </div>
+        <div class="implement">
+            <div class="cue_item">【重回帰の実装】</div>
+            ここでは、重回帰を用いて目的変数の予測を行う。
+            <br>データとしては、scikit-learnのサンプルデータセットである、「Boston house-prices」を用いる。
+            <br>住宅価格の中央値（PRICE）を以下に記載の説明変数を使って予測する。
+        </div>
+        <div class="table_title">
+            <p>表1：Boston house-pricesのデータ項目</p>
+        </div>
+        <table class="boston_houses_table">
+            <tr>
+                <td>CRIM</td>
+                <td>町別の「犯罪率」</td>
+            </tr>
+            <tr>
+                <td>ZN</td>
+                <td>25,000 平方フィート以上の住居区画の占める割合</td>
+            </tr>
+            <tr>
+                <td>INDUS</td>
+                <td>小売業以外の商業が占める面積の割合</td>
+            </tr>
+            <tr>
+                <td>CHAS</td>
+                <td>チャールズ川のダミー変数</td>
+            </tr>
+            <tr>
+                <td>NOX</td>
+                <td>NOx濃度（0.1ppm単位）</td>
+            </tr>
+            <tr>
+                <td>RM</td>
+                <td>1戸当たりの「平均部屋数」</td>
+            </tr>
+            <tr>
+                <td>AGE</td>
+                <td>1940年より前に建てられた持ち家の割合</td>
+            </tr>
+            <tr>
+                <td>DIS</td>
+                <td> 5つあるボストン雇用センターまでの加重距離</td>
+            </tr>
+            <tr>
+                <td>RAD</td>
+                <td>「主要高速道路へのアクセス性」の指数</td>
+            </tr>
+            <tr>
+                <td>TAX</td>
+                <td>10,000ドル当たりの「固定資産税率」</td>
+            </tr>
+            <tr>
+                <td>PTRATIO</td>
+                <td>町別の「生徒と先生の比率」</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>町ごとの黒人の割合</td>
+            </tr>
+            <tr>
+                <td>LSTAT</td>
+                <td>低所得者人口の割合</td>
+            </tr>
+            <tr>
+                <td>MEDV</td>
+                <td>「住宅価格」（1000ドル単位）の中央値</td>
+            </tr>
+        </table>
+        <div class="gist_note">
+            以下にソースコードを記載。
+        </div>
+        <script src="https://gist.github.com/kataokatakuya/b6df52c8ef44c63ab3c1eb863677f15e.js"></script>
+        <!-- <form action="{% url 'multi_reg' %}" method="post" class="regression_form">
+            {% csrf_token %}
+            <input type="submit" value="重回帰の実行" class="run_btn">
+        </form> -->
+        <div class="result">
+            {{result_title}}
+        </div>
+        <div class="score-block">
+            {{ coefficients | safe }}
+            <br>{{ intercept }}
+            <br>{{ score }}
+        </div>
+        {% if flg %}
+        <div class="commentary">
+            <b>【解説】</b>
+            <br>重回帰の実行結果から、「住宅価格」の中央値は部屋数が多くなるほど、高くなることがわかります。
+            <br>また、NOxの濃度が高くなると住宅価格は安くなることも実行結果からわかります。
+            <br>重回帰の決定係数は0.74となっており、単回帰のときより今回の重回帰の学習で得た予測値の方が実際の数値に当てはまっていることがわかります。
+            このことより、決定係数は説明変数が多いほど大きくなることがわかります。
+        </div>
+        {% endif %}
+        <div class="reference">
+            <div class="cue_item">【参考にさせていただいたサイト】</div>
+            <a href="https://watlab-blog.com/2019/12/09/multiple-regression/">・Python機械学習！scikit-learnによる重回帰分析</a>
+            <br><a href="https://navaclass.com/python-multiple-regression/">・【初心者でも簡単】Pythonのscikit-learnで重回帰分析</a>
+            <br><a href="https://www.atmarkit.co.jp/ait/articles/2006/24/news033.html">・Boston Housing：ボストンの住宅価格（部屋数や犯罪率などの13項目）の表形式データセット</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

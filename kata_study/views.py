@@ -173,3 +173,23 @@ def smp_reg(request):
     #     params['score'] = model_data['score']
     #     params['result_title'] = "【実行結果】"
     return render(request, 'kata_study/smp_reg.html', params)
+
+
+# 重回帰ページの表示
+def multi_reg(request):
+    flg = ""
+    params = {
+        'coefficients': '',
+        'intercept':'',
+        'score': '',
+        'result_title': '',
+        'flg': flg
+    }
+    # if (request.method == 'POST'):
+    #     model_data = multi_learn()
+    #     params['coefficients'] = model_data['coefficients'].to_html()
+    #     params['intercept'] = model_data['intercept']
+    #     params['score'] = model_data['score']
+    #     params['result_title'] = "【実行結果】"
+    #     params['flg'] = "Y"
+    return render(request, 'report/multi_reg.html', params)

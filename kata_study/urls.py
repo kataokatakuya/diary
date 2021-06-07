@@ -10,6 +10,7 @@ urlpatterns = [
     path('mch/<int:num>', views.mch, name='mch'),
     path('smp_reg', views.smp_reg, name='smp_reg'),
     # path('smp_reg/smp_plot', views.smp_get_svg, name='smp_plot'),
+    path('mulit_reg', views.multi_reg, name='multi_reg'),
     path('history', views.history, name='history'),
     path('history/<int:num>', views.history, name='history'),
     path('record/<int:num>', views.record, name='record'),
