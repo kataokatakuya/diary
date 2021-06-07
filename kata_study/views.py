@@ -8,6 +8,12 @@ from .forms import ActionForm
 from .models import Record, Topic
 from django.contrib.auth.decorators import login_required
 import datetime
+import matplotlib
+# バックエンドを指定
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+import pickle
 import numpy as np
 import pandas as pd  # データの加工用のパッケージ
 from sklearn import linear_model  # 線形回帰を行うためのモジュール
@@ -168,15 +174,103 @@ def smp_reg(request):
         'score': '',
         'result_title': ''
     }
-    # # 単回帰ページにて「単回帰の実行」ボタンを押下時
-    # if (request.method == 'POST'):
-    #     model_data = smp_learn()
-    #     params['graph'] = '/report/smp_reg/smp_plot'
-    #     params['coefficients'] = model_data['coefficients']
-    #     params['intercept'] = model_data['intercept']
-    #     params['score'] = model_data['score']
-    #     params['result_title'] = "【実行結果】"
+    # 単回帰ページにて「単回帰の実行」ボタンを押下時
+    if (request.method == 'POST'):
+        model_data = smp_learn()
+        params['graph'] = '/kata_study/smp_reg/smp_plot'
+        params['coefficients'] = model_data['coefficients']
+        params['intercept'] = model_data['intercept']
+        params['score'] = model_data['score']
+        params['result_title'] = "【実行結果】"
     return render(request, 'kata_study/smp_reg.html', params)
+
+
+# 単回帰の実行
+def smp_learn():
+    # ボストンデータの読込
+    boston = datasets.load_boston()
+    # ボストンデータを表形式に変換
+    dat = pd.DataFrame(data=boston.data, columns=boston.feature_names)
+    # ターゲットを表に追加
+    dat["PRICE"] = boston.target
+
+    # with構文でファイルパスとバイナリ書き込みモードを設定
+    with open('data/data.pickle', mode='wb') as f:
+        # オブジェクトをシリアライズ
+        pickle.dump(dat, f)
+
+    # 説明変数の設定
+    X = dat[['RM']]
+    # 目的変数の設定
+    y = dat['PRICE']
+
+    # 学習
+    # 線形回帰モデルのインスタンスを作成
+    lr = linear_model.LinearRegression()
+    # 回帰の実行
+    lr.fit(X, y)
+    # with構文でファイルパスとバイナリ書き込みモードを設定
+    with open('data/model.pickle', mode='wb') as f:
+        # オブジェクトをシリアライズ
+        pickle.dump(lr, f)
+    
+    model_data = {
+        'coefficients': '',
+        'intercept':'',
+        'score': '',
+    }
+    model_data['coefficients'] = '回帰係数： ' + str(lr.coef_[0])
+    model_data['intercept'] = '切片： ' + str(lr.intercept_)
+    model_data['score'] = '決定係数： ' + str(lr.score(X, y))
+    return model_data
+
+
+# 単回帰実行結果のグラフを作成
+def smp_setPlt():
+
+    # with構文でファイルパスとバイナリ読み込みモードを設定
+    with open('data/data.pickle', mode='rb') as f:
+        # オブジェクトをデシリアライズ
+        data = pickle.load(f)
+
+    # 説明変数の設定
+    X = data[['RM']]
+    # 目的変数の設定
+    y = data['PRICE']
+    # with構文でファイルパスとバイナリ読み込みモードを設定
+    with open('data/model.pickle', mode='rb') as f:
+        # オブジェクトをデシリアライズ
+        model = pickle.load(f)
+
+    # 単回帰による予測値
+    y_pred = model.predict(X)
+    # 新規のウィンドウを描画
+    plt.figure()
+    # 散布図の描画
+    plt.scatter(X, y)
+    # 回帰直線の描画
+    plt.plot(X, y_pred, "r", lw=3)
+    # x軸のラベル
+    plt.xlabel("RM")
+    # y軸のラベル
+    plt.ylabel("PRICE")
+
+
+# SVG化
+def plt2svg():
+    buf = io.BytesIO()
+    plt.savefig(buf, format='svg', bbox_inches='tight')
+    s = buf.getvalue()
+    buf.close()
+    return s
+
+
+# 実行するビュー関数
+def smp_get_svg(request):
+    smp_setPlt()
+    svg = plt2svg()  # SVG化
+    response = HttpResponse(svg, content_type='image/svg+xml')
+    return response
 
 
 # 重回帰ページの表示

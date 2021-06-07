@@ -56,7 +56,7 @@
             <br>住居の平均部屋数（RM）を説明変数として住宅価格の中央値（PRICE）を予測する。
         </div>
         <script src="https://gist.github.com/kataokatakuya/fe5ed8f83d8c913d33a8d9144ec27015.js"></script>
-        <!-- <form action="{% url 'smp_reg' %}" method="post" class="regression_form">
+        <form action="{% url 'smp_reg' %}" method="post" class="regression_form">
             {% csrf_token %}
             <input type="submit" value="単回帰の実行" class="run_btn">
         </form>
@@ -70,7 +70,7 @@
             {{ coefficients }}
             <br>{{ intercept }}
             <br>{{ score }}
-        </div> -->
+        </div>
         <div class="reference">
             <div class="cue_item">【参考にさせていただいたサイト】</div>
             <a href="https://atarimae.biz/archives/18707">・回帰分析とその主な目的。単回帰分析・重回帰分析・ロジスティック回帰分析の違いについて</a>
