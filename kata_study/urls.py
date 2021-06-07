@@ -17,4 +17,5 @@ urlpatterns = [
     path('record/edit/<int:num>/', views.edit, name='edit'),
     path('record/delete/<int:num>/', views.delete, name='delete'),
     path('log_reg', views.log_reg, name='log_reg'),
+    path('log_reg/log_plot', views.log_plot, name='log_plot'),
 ]

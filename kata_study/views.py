@@ -18,12 +18,15 @@ import numpy as np
 import pandas as pd  # データの加工用のパッケージ
 from sklearn import linear_model  # 線形回帰を行うためのモジュール
 from sklearn import datasets  # サンプルデータセットをインポートするためのモジュール
+from sklearn.linear_model import LogisticRegression  # ロジスティック回帰を行うためのクラス
+from matplotlib.colors import ListedColormap  # カラーマップを作るためのクラス
 
 
+# トップページの表示
 def index(request):
     return render(request, 'kata_study/index.html')
 
-
+# planの投稿画面の表示
 @login_required(login_url='/admin/login/')
 def plan_post(request):
     if(request.method == 'GET'):
@@ -48,7 +51,7 @@ def plan_post(request):
             return render(request, 'kata_study/do_post.html', params)
 
 
-
+# doの投稿画面の表示
 @login_required(login_url='/admin/login/')
 def do_post(request, num):
     if(request.method == 'POST'):
@@ -64,7 +67,7 @@ def do_post(request, num):
         return render(request, 'kata_study/record.html', params)
 
 
-
+# 記録一覧ページの表示
 @login_required(login_url='/admin/login/')
 def history(request, num=1):
     data = Record.objects.filter(owner=request.user)
@@ -74,6 +77,8 @@ def history(request, num=1):
     }
     return render(request, 'kata_study/history.html', params)
 
+
+# 記録の閲覧画面の表示
 @login_required(login_url='/admin/login/')
 def record(request, num):
     data = Record.objects.filter(id=num).first()
@@ -83,6 +88,7 @@ def record(request, num):
     return render(request, 'kata_study/record.html', params)
 
 
+# 投稿の編集画面の表示
 @login_required(login_url='/admin/login/')
 def edit(request, num):
     data = Record.objects.get(id=num)
@@ -143,6 +149,7 @@ def makedate(str):
     return date
 
 
+# 記録の削除機能
 @login_required(login_url='/admin/login/')
 def delete(request, num):
     target = Record.objects.get(id=num)
@@ -331,12 +338,113 @@ def log_reg(request):
         'graph': '',
         'flg': flg,
     }
-    # if (request.method == 'POST'):
-    #     # ロジスティック回帰の学習
-    #     score = log_learn()
-    #     params['graph'] = '/kata_study/log_reg/log_plot'
-    #     params['result_title'] = "【実行結果】"
-    #     params['score'] = '正解率： ' + str(score)
-    #     params['graph_name'] = "図2: ロジスティック回帰の識別境界"
-    #     params['flg'] = "Y"
+    if (request.method == 'POST'):
+        # ロジスティック回帰の学習
+        score = log_learn()
+        params['graph'] = '/kata_study/log_reg/log_plot'
+        params['result_title'] = "【実行結果】"
+        params['score'] = '正解率： ' + str(score)
+        params['graph_name'] = "図2: ロジスティック回帰の識別境界"
+        params['flg'] = "Y"
     return render(request, 'kata_study/log_reg.html', params)
+
+# ロジスティック回帰の実行結果を実行するビュー関数
+def log_plot(request):
+    log_graph()
+    log_svg = plt2svg()
+    response = HttpResponse(log_svg, content_type='image/svg+xml')
+    return response
+
+
+# ロジスティック回帰の学習
+def log_learn():
+    # ワインデータの読込
+    wine = datasets.load_wine()  
+
+    # ワインデータを表形式に変換
+    dat = pd.DataFrame(data=wine.data, columns=wine.feature_names)
+    # ターゲットを表に追加
+    dat['target'] = wine.target
+
+     # with構文でファイルパスとバイナリ書き込みモードを設定
+    with open('data/log_data.pickle', mode='wb') as f:
+        # オブジェクトをシリアライズ
+        pickle.dump(dat, f)
+
+    # 特徴量とターゲットの設定
+    X = dat[['alcohol', 'malic_acid']].values  # 特徴量の設定
+    y = dat['target']  # ターゲットの設定
+
+    # 学習
+    lr = LogisticRegression(random_state=0)  # ロジスティック回帰モデルのインスタンスを作成
+    lr.fit(X, y)  # ロジスティック回帰モデルの重みを学習
+
+    # with構文でファイルパスとバイナリ書き込みモードを設定
+    with open('data/log_model.pickle', mode='wb') as f:
+        # オブジェクトをシリアライズ
+        pickle.dump(lr, f)
+
+    # モデルの精度（正解率）の確認
+    score = lr.score(X,y)
+    return score
+
+
+# ロジスティック回帰のグラフの表示
+def log_graph():
+
+    # with構文でファイルパスとバイナリ読み込みモードを設定
+    with open('data/log_data.pickle', mode='rb') as f:
+        # オブジェクトをデシリアライズ
+        data = pickle.load(f)
+
+    # 特徴量とターゲットの設定
+    X = data[['alcohol', 'malic_acid']].values  # 特徴量の設定
+    y = data['target']  # ターゲットの設定
+
+    # with構文でファイルパスとバイナリ読み込みモードを設定
+    with open('data/log_model.pickle', mode='rb') as f:
+        # オブジェクトをデシリアライズ
+        model = pickle.load(f)
+
+    # マーカーの準備
+    markers = ('s', 'x', 'o')
+    # 色の準備
+    colors = ('red', 'blue', 'lightgreen')
+    # カラーマップの色を設定
+    cmap = ListedColormap(colors[: len(np.unique(y))])
+
+    # 横軸の範囲
+    x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    # 縦軸の範囲
+    x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    # 座標の作成
+    xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, 0.02), np.arange(x2_min, x2_max, 0.02))
+
+    # 各座標ごとの予測結果を格納
+    Z = model.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+    # 予測結果を各座標の形に整形
+    Z = Z.reshape(xx1.shape)
+
+    # 新規のウィンドウを描画
+    plt.figure()
+    # カラーマップを描画
+    plt.contourf(xx1, xx2, Z, alpha=0.3, cmap=cmap)
+    # 横軸の描画範囲の設定
+    plt.xlim(xx1.min(), xx1.max())
+    # 縦軸の描画範囲の設定
+    plt.ylim(xx2.min(), xx2.max())
+
+    # 予測値に対する散布図の描画
+    for idx, cl in enumerate(np.unique(y)):
+        plt.scatter(x=X[y == cl, 0], y=X[y == cl, 1],
+                    alpha=0.8,
+                    c=colors[idx],
+                    marker=markers[idx],
+                    label=cl,
+                    edgecolors='black')
+    # 横軸のラベル
+    plt.xlabel("alcohol")
+    # 縦軸のラベル
+    plt.ylabel("malic_acid")
+    # 凡例の位置
+    plt.legend(loc='upper right')

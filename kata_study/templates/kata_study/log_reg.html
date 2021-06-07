@@ -75,7 +75,7 @@
             以下にソースコードを記載。
         </div>
         <script src="https://gist.github.com/kataokatakuya/85e6828b3c4c942d2c1f51308da1fb22.js"></script>
-        <!-- <form action="{% url 'log_reg' %}" method="post" class="regression_form">
+        <form action="{% url 'log_reg' %}" method="post" class="regression_form">
             {% csrf_token %}
             <input type="submit" value="ロジスティック回帰の実行" class="run_btn">
         </form>
@@ -90,7 +90,7 @@
         </div>
         <div class="score-block">
             {{ score }}
-        </div> -->
+        </div>
         {% if flg %}
         <div class="commentary">
             <b>【解説】</b>
